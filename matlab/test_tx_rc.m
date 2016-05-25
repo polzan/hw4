@@ -1,6 +1,10 @@
 clear all; close all; clc;
 
-[num_bits, tx_syms, tx_bits] = trasmitter(321098);
-detected = receiver(tx_syms);
+[num_bits, tx_syms, tx_bits, uncoded_bits] = trasmitter(1e5, 'coded');
 
-stem(detected(1:num_bits)-tx_bits)
+SNRdB=  2.5; sigma = sqrt(10^(-SNRdB/10));
+rc_syms = awgn(tx_syms, SNRdB, 0);
+
+detected = receiver(rc_syms, length(uncoded_bits)*2, sigma^2, 'coded');
+
+sum(uncoded_bits ~= detected)
