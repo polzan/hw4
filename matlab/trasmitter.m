@@ -1,5 +1,6 @@
-function [n_info_bits, symbols, bits] = trasmitter(n_bits_target, tx_type)
+function [n_info_bits, symbols, bits, uncoded_bits] = trasmitter(n_bits_target, tx_type)
 %generates random sequences of lengths multiple of 32400
+warning('off', 'comm:fec:DeprecatedFunction');
 enc= fec.ldpcenc;
 cw_length = 2*enc.NumInfoBits;   %codeword length
 iw_length = enc.NumInfoBits;    %infoword length
@@ -7,45 +8,30 @@ n_blocks = ceil(n_bits_target/iw_length);
 n_bits = n_blocks*cw_length; %tot. number of bits coded
 n_info_bits = n_blocks*iw_length;   %tot. number of info-bits tx
 
-if nargin > 1    %coded
-    sequence = zeros(1,n_bits);
-    for i = 1 : n_blocks
-        msg= randi([0 1],1,enc.NumInfoBits);
-        codeword = encode(enc,msg);
-        sequence(1,(i-1)*cw_length + 1 : i*cw_length) = codeword;
-    end
-else        %uncoded
-    sequence = randi([0 1],1,n_info_bits);
+if nargin < 2
+    tx_type = 'uncoded';
 end
-bits = sequence.';
 
-interlace = zeros(31,35);
-int_size = numel(interlace);    %number interlaced bits
-n_interlace = floor(length(sequence)/int_size) +1;  %number of iterations
-rem_bits = mod(length(sequence),int_size);
-int_seq = zeros(numel(interlace)*n_interlace,1);
-for l = 1:n_interlace -1        
-    interlace(:) = sequence((l-1)*int_size +1 : l*int_size); %write column-wise
-    int_seq((l-1)*int_size + 1 : l*int_size,1) = reshape(interlace.',int_size,1);   %read row-wise
+switch tx_type
+    case 'coded'
+        sequence = zeros(1,n_bits);
+        uncoded_bits = zeros(1, n_info_bits);
+        for i = 1 : n_blocks
+            msg= randi([0 1],1,enc.NumInfoBits);
+            uncoded_bits((i-1)*enc.NumInfoBits+1:i*enc.NumInfoBits) = msg;
+            codeword = encode(enc,msg);
+            sequence(1,(i-1)*cw_length + 1 : i*cw_length) = codeword;
+        end
+        uncoded_bits = transpose(uncoded_bits);
+        coded_bits = transpose(sequence);
+        bits = interlace(coded_bits);
+    case 'uncoded'
+        uncoded_bits = randi([0 1],n_info_bits,1);
+        bits = uncoded_bits;
+    otherwise
+        error('specify coded or uncoded');
 end
-%copy remaining bits
-interlace = zeros(31,35);
-interlace(1:rem_bits) = sequence(l*int_size +1 : length(sequence)); 
-int_seq(l*int_size + 1 : (l+1)*int_size,1) = reshape(interlace.',int_size,1);
 
-% if mod(n_interlace,2)==1    % remove the last 0 bit to make QPSKmodulator working if int_seq is odd
-%     int_seq = int_seq(1:length(int_seq)-1,1);     
-% end
-% 
-if mod(n_interlace,2)==1        %if int_seq is odd i add onother block of size 1085
-    int_seq = [int_seq; zeros(1085,1)]; %to make QPSKmodulator work and don't loose data;
-end     %at the receiver we'll compare only info_bits
-
-%our modulator
-symbols = QPSKmodulator(int_seq);     
-
-% %prof suggested modulator
-% modobj = modem.pskmod('M',4,'InputType','Bit');     
-% symbols = modulate(modobj,int_seq);
-
+modObj= modem.pskmod('M',4,'InputType','Bit');
+symbols= modulate(modObj, bits);
 end
