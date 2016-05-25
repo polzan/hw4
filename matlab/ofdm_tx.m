@@ -6,7 +6,7 @@ function [s, T_ofdm] = ofdm_tx(a, T, M, Npx)
 
 a_subch = reshape(a, M, []);
 %assert(all(a_subch(1,:).' == downsample(a, M, 0)));
-A = ifft(a_subch, [], 2);
+A = ifft(a_subch, [], 1);
 %assert(all(abs(A(1,:).' - ifft(downsample(a, M, 0))) < 1e-12));
 prefix = A(M-Npx+1:M,:);
 A_tx = [prefix; A];

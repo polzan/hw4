@@ -7,7 +7,7 @@ function [y, Ty] = ofdm_rx(r, T_ofdm, M, Npx, gc)
 
 r_subch = reshape(r, M+Npx, []);
 x_subch_cyclic = r_subch(Npx+1:M+Npx,:); % Drop the cyclic prefix
-x_subch = fft(x_subch_cyclic, [], 2);
+x_subch = fft(x_subch_cyclic, [], 1);
 
 Gc = fft(gc, M);
 y_subch = zeros(M, size(x_subch, 2));
