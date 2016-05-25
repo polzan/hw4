@@ -35,11 +35,16 @@ int_seq(l*int_size + 1 : (l+1)*int_size,1) = reshape(interlace.',int_size,1);
 % if mod(n_interlace,2)==1    % remove the last 0 bit to make QPSKmodulator working if int_seq is odd
 %     int_seq = int_seq(1:length(int_seq)-1,1);     
 % end
-
+% 
 if mod(n_interlace,2)==1        %if int_seq is odd i add onother block of size 1085
     int_seq = [int_seq; zeros(1085,1)]; %to make QPSKmodulator work and don't loose data;
-end                                 %at the receiver we'll compare only info_bits
+end     %at the receiver we'll compare only info_bits
 
-symbols = QPSKmodulator(int_seq);
+%our modulator
+% symbols = QPSKmodulator(int_seq);     
+
+%prof suggested modulator
+modobj = modem.pskmod('M',4,'InputType','Bit');     
+symbols = modulate(modobj,int_seq);
 
 end
