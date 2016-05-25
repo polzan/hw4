@@ -7,9 +7,12 @@ function [y, Ty] = ofdm_rx(r, T_ofdm, M, Npx, gc)
 
 r_subch = reshape(r, M+Npx, []);
 x_subch_cyclic = r_subch(Npx+1:M+Npx,:); % Drop the cyclic prefix
-x_subch = fft(x_subch_cyclic, [], 2);
+x_subch = fft(x_subch_cyclic, [], 1);
 
 Gc = fft(gc, M);
+if any(abs(Gc) < 1e-2)
+    warning('Gc is very small');
+end
 y_subch = zeros(M, size(x_subch, 2));
 for k=1:size(x_subch, 2)
     y_subch(:,k) = x_subch(:,k) ./ Gc;
