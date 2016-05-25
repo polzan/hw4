@@ -18,6 +18,23 @@ else        %uncoded
     sequence = randi([0 1],1,n_info_bits);
 end
 
-symbols = QPSKmodulator(sequence);
+interlace = zeros(31,35);
+n_interlace = floor(length(sequence)/numel(interlace)) +1;  %number iteration
+int_size = numel(interlace);
+rem_bits = mod(length(sequence),numel(interlace));
+int_seq = zeros(numel(interlace)*n_interlace,1);
+for l = 1:n_interlace -1        
+    interlace(:) = sequence((l-1)*int_size +1 : l*int_size); %write column-wise
+    int_seq((l-1)*int_size + 1 : l*int_size,1) = reshape(interlace.',int_size,1);   %read row-wise
+end
+%copy remaining bits
+interlace = zeros(31,35);
+interlace(1:rem_bits) = sequence(l*int_size +1 : length(sequence)); 
+int_seq(l*int_size + 1 : (l+1)*int_size,1) = reshape(interlace.',int_size,1);
+
+if mod(n_interlace,2)==1    % add a 0 bit to make QPSKmodulator working if int_seq is odd
+    int_seq = [int_seq; 0];     %at receiver I compare only info_bits
+end
+symbols = QPSKmodulator(int_seq);
 
 end
