@@ -1,5 +1,5 @@
 function [dec_bits] = receiver(y, real_data_length, sigma2_w, rx_type)
-if nargin < 3
+if nargin < 4
     rx_type = 'uncoded';
 end
 
