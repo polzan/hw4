@@ -19,7 +19,7 @@ else        %uncoded
 end
 
 interlace = zeros(31,35);
-n_interlace = floor(length(sequence)/numel(interlace)) +1;  %number iteration
+n_interlace = floor(length(sequence)/numel(interlace)) +1;  %number of iterations
 int_size = numel(interlace);
 rem_bits = mod(length(sequence),numel(interlace));
 int_seq = zeros(numel(interlace)*n_interlace,1);
@@ -32,9 +32,14 @@ interlace = zeros(31,35);
 interlace(1:rem_bits) = sequence(l*int_size +1 : length(sequence)); 
 int_seq(l*int_size + 1 : (l+1)*int_size,1) = reshape(interlace.',int_size,1);
 
-if mod(n_interlace,2)==1    % add a 0 bit to make QPSKmodulator working if int_seq is odd
-    int_seq = [int_seq; 0];     %at receiver I compare only info_bits
-end
+% if mod(n_interlace,2)==1    % remove the last 0 bit to make QPSKmodulator working if int_seq is odd
+%     int_seq = int_seq(1:length(int_seq)-1,1);     
+% end
+
+if mod(n_interlace,2)==1        %if int_seq is odd i add onother block of size 1085
+    int_seq = [int_seq; zeros(1085,1)]; %to make QPSKmodulator work and don't loose data;
+end                                 %at the receiver we'll compare only info_bits
+
 symbols = QPSKmodulator(int_seq);
 
 end
