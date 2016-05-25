@@ -9,6 +9,9 @@ r_subch = reshape(r, M+Npx, []);
 x_subch_cyclic = r_subch(Npx+1:M+Npx,:); % Drop the cyclic prefix
 x_subch = fft(x_subch_cyclic, [], 1);
 
+if size(gc, 2) ~= 1
+    gc = transpose(gc);
+end
 Gc = fft(gc, M);
 if any(abs(Gc) < 1e-2)
     warning('Gc is very small');
