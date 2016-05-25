@@ -6,10 +6,10 @@ a = QPSKmodulator(bits);
 T = 1;
 
 M = 512;
-Npx = floor(35/4); % greater than length of gc
+Npx = floor(35/4); % max possible?
 [s, T_ofdm] = ofdm_tx(a, T, M, Npx);
 
-SNR = Inf;
+SNR = 11;
 t0 = 35; % 2 half-length of rcos + peak of qc
 qc_length = 20;
 rcos_length = 25;
