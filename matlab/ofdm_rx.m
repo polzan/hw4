@@ -1,4 +1,4 @@
-function [y, Ty] = ofdm_rx(r, T_ofdm, M, Npx, gc)
+function [y, Ty, y_subch, r_subch] = ofdm_rx(r, T_ofdm, M, Npx, gc)
 % r: received signal, T_ofdm: period of the received signal, M: num of
 % subchannels, Npx: length of the cyclic prefix, gc: impulse response of
 % the channel + lowpass filters (g_rcos * q_c * g_rcos)

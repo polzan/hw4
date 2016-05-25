@@ -1,4 +1,4 @@
-function [s, T_ofdm] = ofdm_tx(a, T, M, Npx)
+function [s, T_ofdm, a_subch, A_tx] = ofdm_tx(a, T, M, Npx)
 % a: symbols, T: symbol period, M: num of subchannels, Npx: length of the
 % cyclic prefix
 %
