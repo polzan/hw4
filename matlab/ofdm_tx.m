@@ -4,6 +4,13 @@ function [s, T_ofdm, a_subch, A_tx] = ofdm_tx(a, T, M, Npx)
 %
 % s: modulated signal, T_ofdm: period of the modulated signal
 
+% Pad the input to multiples of M
+over_len = mod(length(a), M);
+if over_len ~= 0
+    pad_len = M - over_len;
+    a = [a; zeros(pad_len, 1)];
+end
+
 a_subch = reshape(a, M, []);
 %assert(all(a_subch(1,:).' == downsample(a, M, 0)));
 A = ifft(a_subch, [], 1);
