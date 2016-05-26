@@ -1,6 +1,6 @@
 clear all; close all; clc;
 
-[num_bits, tx_syms, tx_bits, uncoded_bits] = trasmitter(1e5, 'coded');
+[num_bits, tx_syms, tx_bits, uncoded_bits] = transmitter(1e5, 'coded');
 
 SNRdB=  2.5; sigma = sqrt(10^(-SNRdB/10));
 rc_syms = awgn(tx_syms, SNRdB, 0);

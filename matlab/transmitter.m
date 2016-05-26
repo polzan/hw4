@@ -1,4 +1,4 @@
-function [n_info_bits, symbols, bits, uncoded_bits] = trasmitter(n_bits_target, tx_type)
+function [n_info_bits, symbols, bits, uncoded_bits] = transmitter(n_bits_target, tx_type)
 %generates random sequences of lengths multiple of 32400
 warning('off', 'comm:fec:DeprecatedFunction');
 enc= fec.ldpcenc;
