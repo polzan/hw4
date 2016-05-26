@@ -24,8 +24,8 @@ s_up = upsample(s, upsample_factor);
 s_c = filter(rcos_qc, 1, s_up);
 
 % Noise
-w_c = channel_noise(length(s_c), SNR, rcos_qc, M, Npx, noise_seed);
-rn = s_c + w_c;
+%w_c = channel_noise(length(s_c), SNR, rcos_qc, M, Npx, noise_seed);
+rn = awgn(s_c, SNR, 'measured'); %s_c + w_c;
 
 % Receiver filter
 rn_filt = filter(rcos_f, 1, rn);
