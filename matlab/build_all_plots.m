@@ -1,7 +1,7 @@
 close all; clear all; clc;
 
 % Uncoded
-SNRs = linspace(5, 15, 30);
+SNRs = linspace(5, 15, 10);
 Nbits = 5e5;
 
 % QAM lower bound
@@ -21,8 +21,8 @@ semilogy(SNRs, pbit_awgn_u);
 ylim([1e-5, 1e-1]);
 
 % Coded
-SNRs = linspace(0, 2, 30);
-Nbits = 5e5;
+SNRs = linspace(1.5, 3.5, 10);
+Nbits = 1e6;
 
 for i=1:length(SNRs)
     pbit_awgn_c(i) = simulation_bound(Nbits, SNRs(i), 'coded');
