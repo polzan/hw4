@@ -4,10 +4,10 @@ Nbits = 2^18;
 T = 1;
 
 M = 512;
-Npx = floor(35/4); % max possible?
+Npx = 0; % length of gc - 1
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx);
 
-SNR = 15;
+SNR = Inf;
 t0 = 35; % 2 half-length of rcos + peak of qc
 qc_length = 20;
 rcos_length = 25;
@@ -15,7 +15,12 @@ rcos_length = 25;
 
 t0_sampled = floor(t0/4);
 
-[y, Ty, y_subch] = ofdm_rx(r(t0_sampled-Npx+1:length(r)), T_ofdm, M, Npx, gc);
+figure;
+stem((0:length(gc)-1), gc);
+hold on;
+plot(t0_sampled .* ones(2,1), ylim);
+
+[y, Ty, y_subch] = ofdm_rx(r, T_ofdm, M, Npx, gc, t0_sampled);
 
 figure;
 subplot(2,1,1);
