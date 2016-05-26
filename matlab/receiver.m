@@ -5,7 +5,7 @@ end
 
 switch rx_type
     case 'uncoded'
-        demodObj = modem.pskdemod('OutputType', 'Bit', 'M', 4, 'DecisionType','Hard decision', 'NoiseVariance',sigma2_w);
+        demodObj = modem.pskdemod('OutputType', 'Bit', 'M', 4, 'DecisionType','Hard decision');
         dec_bits_all = demodulate(demodObj, y);
         dec_bits = dec_bits_all(1:real_data_length);
     case 'coded'
