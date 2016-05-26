@@ -9,6 +9,7 @@ switch rx_type
         dec_bits_all = demodulate(demodObj, y);
         dec_bits = dec_bits_all(1:real_data_length);
     case 'coded'
+        real_data_length = 2*real_data_length;
         demodObj = modem.pskdemod('OutputType', 'Bit', 'M', 4, 'DecisionType','LLR', 'NoiseVariance',sigma2_w);
         llr_int = demodulate(demodObj, y);
         llr = deinterlace(llr_int, real_data_length);
