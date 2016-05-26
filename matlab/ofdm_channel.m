@@ -21,15 +21,15 @@ gc = downsample(all_resp, upsample_factor, mod(t0, upsample_factor));
 
 % Transmitter + channel
 s_up = upsample(s, upsample_factor);
-s_c = filter(rcos_qc, 1, s_up);
+s_c = conv(rcos_qc, s_up);
 
 % Noise
 [w_c, sigma2_w] = channel_noise(length(s_c), SNR, rcos_qc, M, Npx, noise_seed);
 rn = s_c + w_c;
 
 % Receiver filter
-rn_filt = filter(rcos_f, 1, rn);
+rn_filt = conv(rcos_f, rn);
 
 % Sampling
-r = downsample(rn_filt, upsample_factor, mod(t0, upsample_factor));
+r = downsample(rn_filt(1:length(s_up)+t0), upsample_factor, mod(t0, upsample_factor));
 end

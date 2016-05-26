@@ -7,7 +7,7 @@ M = 512;
 Npx = 0; % length of gc - 1
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx);
 
-SNR = Inf;
+SNR = 22;
 t0 = 35; % 2 half-length of rcos + peak of qc
 qc_length = 20;
 rcos_length = 25;
