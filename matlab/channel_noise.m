@@ -2,7 +2,7 @@ function [w, sigma2_w] = channel_noise(num_samples, SNR, rcos_qc, M, Npx, noise_
 % Energy of the filters before s_c
 E_tx_ch = norm(rcos_qc)^2;
 
-sigma2_a = 2; % <- what if the bits are channel coded?
+sigma2_a = 1; % assuming iid symbols
 sigma2_s = sigma2_a/M;
 sigma2_w = E_tx_ch * sigma2_s / 10^(SNR/10);
 
