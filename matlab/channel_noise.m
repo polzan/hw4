@@ -1,9 +1,9 @@
-function [w, sigma2_w] = channel_noise(num_samples, SNR, rcos_qc, M, Npx, noise_seed)
+function [w, sigma2_w] = channel_noise(num_samples, SNR, rcos_qc, M, Npx, Nvirt, noise_seed)
 % Energy of the filters before s_c
 E_tx_ch = norm(rcos_qc)^2;
 
 sigma2_a = 1; % assuming iid symbols
-sigma2_s = sigma2_a/M;
+sigma2_s = sigma2_a * (M - Nvirt)/M^2;
 sigma2_w = E_tx_ch * sigma2_s / 10^(SNR/10);
 
 oldstate = rng(noise_seed);
