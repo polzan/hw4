@@ -7,6 +7,6 @@ sigma2_s = sigma2_a * (M - Nvirt)/M^2;
 sigma2_w = E_tx_ch * sigma2_s / 10^(SNR/10);
 
 oldstate = rng(noise_seed);
-w = sqrt(sigma2_w) .* (randn(num_samples, 1) + 1j * randn(num_samples, 1));
+w = sqrt(sigma2_w/2) .* (randn(num_samples, 1) + 1j * randn(num_samples, 1));
 rng(oldstate);
 end
