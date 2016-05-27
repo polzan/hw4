@@ -14,10 +14,10 @@ sigma2_a = 1;
 sigma2_wc = (E_qc * sigma2_a) / 10^(SNR/10);
 N0 = sigma2_wc * T_Q;
 
-sc = conv(gc, a_up);
+sc = filter(qc,1, a_up);
 wc = sqrt(sigma2_wc/2).*(randn(length(sc), 1) + 1j*(randn(length(sc), 1)));
 rc = sc + wc;
-rc = rc(1:length(a_up)+t0);
+% rc = rc(1:length(a_up)+t0);
 
 end
 

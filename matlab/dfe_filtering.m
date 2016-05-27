@@ -1,12 +1,13 @@
 function [detected_syms, y] = dfe_filtering(c, b, x, D)
-xff = conv(c, x);
-xff = xff(1:length(x)+D);
+% xff = conv(c, x);
+% xff = xff(1:length(x)+D);
+xff = filter(c, 1, x);
 if isempty(b) || all(b == 0)
     error('not implemented');
 %     y = xff;
 %     [~, detected_syms] = receiver(y, );
 else
-    Nsym = length(x)+D;
+    Nsym = length(x);
     detected_syms = zeros(Nsym, 1);
     y = zeros(Nsym, 1);
     for k=0:Nsym-1
