@@ -1,4 +1,4 @@
-function [y, Ty, y_subch, T_subch] = ofdm_rx(r, T_ofdm, M, Npx, Nvirt, gc, t0)
+function [y, Ty, y_subch_novirt, T_subch] = ofdm_rx(r, T_ofdm, M, Npx, Nvirt, gc, t0)
 % r: received signal, T_ofdm: period of the received signal, M: num of
 % subchannels, Npx: length of the cyclic prefix, Nvirt: number of virtual subchans,
 % gc: impulse response of

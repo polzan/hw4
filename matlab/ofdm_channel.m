@@ -1,7 +1,7 @@
 function [r, gc, T_c, sigma2_w] = ofdm_channel(s, T_ofdm, ...
     SNR, t0, ...
     qc_length, rcos_length, ...
-    M, Npx, ...
+    M, Npx, Nvirt, ...
     noise_seed)
 % SNR in dB, t0 in multiples of T_c
 %
@@ -24,7 +24,7 @@ s_up = upsample(s, upsample_factor);
 s_c = conv(rcos_qc, s_up);
 
 % Noise
-[w_c, sigma2_w] = channel_noise(length(s_c), SNR, rcos_qc, M, Npx, noise_seed);
+[w_c, sigma2_w] = channel_noise(length(s_c), SNR, rcos_qc, M, Npx, Nvirt, noise_seed);
 rn = s_c + w_c;
 
 % Receiver filter

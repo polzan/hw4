@@ -11,7 +11,7 @@ function [y_subch, T_subch] = ofdm_subch_rx(r, T_ofdm, M, Npx, gc, t0)
 T_subch = T_ofdm * (Npx + M);
 
 % Start to demodulate from t0
-%r = r(t0+1:length(r));
+r = r(t0+1:length(r));
 
 % Pad the input to multiples of M+Npx
 over_len = mod(length(r), M+Npx);
