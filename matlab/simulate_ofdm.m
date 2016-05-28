@@ -6,8 +6,8 @@ Nbits = Nbits + skip_final_transient;
 T = 1; % symbol period
 
 M = 512;
-Npx = 0; % length of gc - 1
-Nvirt = 0;
+Npx = 16; % length of gc - 1
+Nvirt = 101;
 
 % OFDM modulation
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx, Nvirt);
