@@ -1,4 +1,4 @@
-function [rc, sc, qc, wc, sigma2_a, N0] = dfe_trasmitter(a, SNR, qc_length,t0)
+function [rc, sc, qc, wc, sigma2_a, sigma2_wc, N0] = dfe_trasmitter(a, SNR, qc_length,t0)
 T = 1; % Sym period
 up_factor = 4;
 T_Q = T/up_factor;
