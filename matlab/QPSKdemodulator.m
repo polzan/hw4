@@ -1,26 +1,24 @@
-function [bits, detected_syms] = QPSKdemodulator(data)
-bits = zeros(2*length(data),1);
-detected_syms = zeros(length(data), 1);
-sym_d = 1;
-v = 0;
-for i = 1:length(data)
-    if real(data(i)) > 0 && imag(data(i)) > 0
-        bits(v+i) = 0;
-        bits(v+i+1) = 0;
-        detected_syms(i) = sym_d * (1 + 1j);
-    elseif  real(data(i)) > 0 && imag(data(i)) < 0
-        bits(v+i) = 1;
-        bits(v+i+1) = 0;
-        detected_syms(i) = sym_d * (1 - 1j);
-    elseif real(data(i)) < 0 && imag(data(i)) > 0
-        bits(v+i) = 0;
-        bits(v+i+1) = 1;
-        detected_syms(i) = sym_d * (-1 + 1j);
+function [bits, detected_syms] = QPSKdemodulator(y)
+bits = zeros(2*length(y),1);
+detected_syms = zeros(length(y), 1);
+d = 1;
+for k=0:length(y)-1
+    re = real(y(k+1));
+    im = imag(y(k+1));
+    if re > 0
+        sym = d;
+        bits(2*k+1) = 1;
     else
-        bits(v+i) = 1;
-        bits(v+i+1) = 1;
-        detected_syms(i) = sym_d * (-1 - 1j);
+        sym = -d;
+        bits(2*k+1) = 0;
     end
-    v = v+1;
+    if im > 0
+        sym = sym + d*1j;
+        bits(2*k+2) = 1;
+    else
+        sym = sym - d*1j;
+        bits(2*k+2) = 0;
+    end
+    detected_syms(k+1) = sym;
 end
 end

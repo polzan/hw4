@@ -2,21 +2,19 @@ function a = QPSKmodulator(bits)
 if mod(length(bits), 2) ~= 0
     error('The QPSK modulator needs an even number of bits');
 end
-if size(bits, 1) == 1
-    bits = transpose(bits);
-end
 a = zeros(length(bits)/2, 1);
 d = 1;
-for i=2:2:length(bits)
-    if bits(i)
-        a(i/2) = -d;
+for k=0:length(a)-1
+    if bits(2*k+1)
+        sym = d;
     else
-        a(i/2) = d;
+        sym = -d;
     end
-    if bits(i-1)
-        a(i/2) = a(i/2) - 1j*d;
+    if bits(2*k+2)
+        sym = sym + d*1j;
     else
-        a(i/2) = a(i/2) + 1j*d;
+        sym = sym - d*1j;
     end
+    a(k+1) = sym;
 end
 end
