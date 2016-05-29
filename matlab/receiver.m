@@ -12,22 +12,18 @@ switch rx_type
         [~, ~, llr_int] = QPSKdemodulator(y, sigma2_w);
         llr = deinterlace(llr_int, real_data_length);
         
-        warning('off', 'comm:fec:DeprecatedFunction');
-        dec= fec.ldpcdec;
-        dec.DecisionType= 'Hard decision';
-        dec.OutputFormat = 'Information part';
-        dec.NumIterations= 50;
-        dec.DoParityChecks= 'Yes';
-        
-        if mod(length(llr), dec.BlockLength) ~= 0
+        dec= comm.LDPCDecoder;
+        blocklength = size(dec.ParityCheckMatrix, 2);
+        iw_length = size(dec.ParityCheckMatrix, 1);
+        if mod(length(llr), blocklength) ~= 0
             error('The received LLR must be a multiple of the blocklength');
         end
         
         dec_bits = zeros(length(llr)/2, 1);
-        for i=0:length(llr)/dec.BlockLength-1
-            block = llr(i*dec.BlockLength+1:(i+1)*dec.BlockLength);
-            dec_bits_block = decode(dec, transpose(block));
-            dec_bits(i*dec.NumInfoBits + 1 : (i+1)*dec.NumInfoBits) = transpose(dec_bits_block);
+        for i=0:length(llr)/blocklength-1
+            block = llr(i*blocklength+1:(i+1)*blocklength);
+            dec_bits_block = step(dec, block);
+            dec_bits(i*iw_length + 1 : (i+1)*iw_length) = dec_bits_block;
         end
     otherwise
         error('specify coded or uncoded');
