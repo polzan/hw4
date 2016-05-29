@@ -12,7 +12,7 @@ rho_ofdm = 0.0625;
 T_c = T_ofdm / upsample_factor;
 
 % Filters and responses
-rcos_f = rcos_filter(T_c, T_ofdm, rho_ofdm, rcos_length);
+rcos_f = rcosdesign(rho_ofdm, rcos_length/upsample_factor, upsample_factor, 'sqrt');
 qc = channel_response(qc_length);
 rcos_qc = conv(rcos_f, qc);
 all_resp = conv(rcos_qc, rcos_f); % at T_c

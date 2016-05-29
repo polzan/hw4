@@ -10,16 +10,16 @@ T = 1; % symbol period
 
 M = 512;
 Npx = 16; % length of gc - 1
-Nvirt = 0;
+Nvirt = 61;
 
 % OFDM modulation
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx, Nvirt);
 
 % Channel
 SNR = 14;
-t0 = 35; % 2 half-length of rcos + peak of qc
+t0 = 71; % 2 half-length of rcos + peak of qc
 qc_length = 20;
-rcos_length = 25;
+rcos_length = 60;
 [r, gc, T_c, t0_sampled, sigma2_w] = ofdm_channel(s, T_ofdm, SNR, t0, qc_length, rcos_length, M, Npx, Nvirt);
 
 figure;
