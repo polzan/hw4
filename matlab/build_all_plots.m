@@ -11,7 +11,7 @@ pe_theor_bound = 2 .* Q(sqrt(SNRs_lin));
 pbit_theor_bound = pe_theor_bound ./ 2;
 
 for i=1:length(SNRs)
-    pbit_awgn_u(i) = simulation_bound(Nbits, SNRs(i), 'coded');
+    pbit_awgn_u(i) = simulation_bound(Nbits, SNRs(i), 'uncoded');
     pbit_ofdm_u(i) = simulate_ofdm(Nbits, SNRs(i), 'uncoded');
 end
 
