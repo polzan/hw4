@@ -1,0 +1,6 @@
+#!/bin/bash
+#$ -cwd -m ea 
+
+pushd matlab
+matlab -nodesktop -nosplash -r run_uncoded,run_coded,plot_pbit
+popd
