@@ -1,10 +1,20 @@
-function [bits, detected_syms] = QPSKdemodulator(y)
+function [bits, detected_syms, llr] = QPSKdemodulator(y, sigma2_w)
+if nargin < 2
+    sigma2_w = NaN;
+end
+real_y = real(y);
+imag_y = imag(y);
+
+llr = zeros(2*length(y),1);
+llr((0:2:length(llr)-1)+1) = -2.*real_y ./ (sigma2_w/2);
+llr((1:2:length(llr)-1)+1) = -2.*imag_y ./ (sigma2_w/2);
+
 bits = zeros(2*length(y),1);
 detected_syms = zeros(length(y), 1);
 d = 1;
 for k=0:length(y)-1
-    re = real(y(k+1));
-    im = imag(y(k+1));
+    re = real_y(k+1);
+    im = imag_y(k+1);
     if re > 0
         sym = d;
         bits(2*k+1) = 1;
