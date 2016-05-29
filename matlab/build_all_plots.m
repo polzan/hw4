@@ -13,6 +13,7 @@ pbit_theor_bound = pe_theor_bound ./ 2;
 for i=1:length(SNRs)
     pbit_awgn_u(i) = simulation_bound(Nbits, SNRs(i), 'uncoded');
     pbit_ofdm_u(i) = simulate_ofdm(Nbits, SNRs(i), 'uncoded');
+    pbit_dfe_u(i) = simulate_dfe(Nbits, SNRs(i), 'uncoded');
 end
 
 figure;
@@ -20,6 +21,7 @@ semilogy(SNRs, pbit_theor_bound);
 hold on;
 semilogy(SNRs, pbit_awgn_u);
 semilogy(SNRs, pbit_ofdm_u);
+semilogy(SNRs, pbit_dfe_u);
 ylim([1e-5, 1e-1]);
 
 % Coded
@@ -29,10 +31,12 @@ Nbits = 1e5;
 for i=1:length(SNRs)
     pbit_awgn_c(i) = simulation_bound(Nbits, SNRs(i), 'coded');
     pbit_ofdm_c(i) = simulate_ofdm(Nbits, SNRs(i), 'coded');
+    pbit_dfe_c(i) = simulate_dfe(Nbits, SNRs(i), 'coded');
 end
 
 figure;
 semilogy(SNRs, pbit_awgn_c);
 hold on;
 semilogy(SNRs, pbit_ofdm_c);
+semilogy(SNRs, pbit_dfe_c);
 ylim([1e-5, 1e-1]);
