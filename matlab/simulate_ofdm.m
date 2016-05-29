@@ -13,7 +13,7 @@ Nvirt = 101;
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx, Nvirt);
 
 % Channel
-t0 = 34; % 2 half-length of rcos + peak of qc
+t0 = 35; % 2 half-length of rcos + peak of qc
 qc_length = 20;
 rcos_length = 25;
 [r, gc, T_c, t0_sampled, sigma2_w] = ofdm_channel(s, T_ofdm, SNR, t0, qc_length, rcos_length, M, Npx, Nvirt);
