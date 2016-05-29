@@ -10,7 +10,7 @@ gm = fliplr(conj(qc));    %match filter
 gc = conv(qc,gm);   %tot impulse resp.
 
 E_qc = norm(qc)^2; 
-sigma2_a = 1;
+sigma2_a = 2;
 sigma2_wc = (E_qc * sigma2_a) / 10^(SNR/10);
 N0 = sigma2_wc * T_Q;
 

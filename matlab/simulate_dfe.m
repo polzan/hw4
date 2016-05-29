@@ -6,7 +6,6 @@ M1 = 3;
 M2 = 2;
 D = 1;
 
-Nbits = 2^18;
 [n_info_bits, a, bits, uncoded_bits] = transmitter(Nbits, coded);
 
 [rc, sc, qc, wc, sigma2_a, sigma2_w, N0] = dfe_trasmitter(a, SNRdB, 25, t0);
