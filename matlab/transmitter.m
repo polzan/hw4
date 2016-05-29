@@ -31,7 +31,5 @@ switch tx_type
     otherwise
         error('specify coded or uncoded');
 end
-
-modObj= modem.pskmod('M',4,'InputType','Bit');
-symbols= modulate(modObj, bits);
+symbols = QPSKmodulator(bits);
 end

@@ -4,9 +4,8 @@ if nargin < 4
 end
 
 switch rx_type
-    case 'uncoded'
-        demodObj = modem.pskdemod('OutputType', 'Bit', 'M', 4, 'DecisionType','Hard decision');
-        dec_bits_all = demodulate(demodObj, y);
+    case 'uncoded'        
+        dec_bits_all = QPSKdemodulator(y);
         dec_bits = dec_bits_all(1:real_data_length);
     case 'coded'
         real_data_length = 2*real_data_length;
