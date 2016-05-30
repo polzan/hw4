@@ -23,7 +23,14 @@ s_up = upsample(s, upsample_factor);
 s_c = conv(rcos_qc, s_up);
 
 % Noise
-[w_c, sigma2_w] = channel_noise(length(s_c), SNR, rcos_qc, M, Npx, Nvirt);
+E_tx_ch = norm(rcos_qc)^2; % Energy of the filters before s_c
+
+sigma2_a = 2; % assuming iid symbols
+sigma2_s = sigma2_a / M;
+sigma2_sc = sigma2_s * E_tx_ch;
+sigma2_w = sigma2_sc / 10^(SNR/10);
+
+w_c = wgn(length(s_c), 1, sigma2_w, 'linear', 'complex');
 rn = s_c + w_c;
 
 % Receiver filter
