@@ -1,14 +1,15 @@
 function [Pbit,err_count] = simulate_dfe(Nbits, SNRdB, coded)
 % Parameters
-t0 = 24;
+p = global_parameters();
+t0 = p.dfe.t0;
 t0_sampled = floor(t0/4);
-M1 = 3;
-M2 = 2;
-D = 1;
+M1 = p.dfe.M1;
+M2 = p.dfe.M2;
+D = p.dfe.D;
 
 [n_info_bits, a, bits, uncoded_bits] = transmitter(Nbits, coded);
 
-[rc, sc, qc, wc, sigma2_a, sigma2_w, N0] = dfe_trasmitter(a, SNRdB, 25, t0);
+[rc, sc, qc, wc, sigma2_a, sigma2_w, N0] = dfe_trasmitter(a, p.sym_period, SNRdB, p.channel.qc_length, t0);
 
 [c, b] = build_dfe_filters(qc, flip(conj(qc)), t0, sigma2_a, N0, D, M1, M2);
 

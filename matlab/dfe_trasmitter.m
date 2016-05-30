@@ -1,9 +1,7 @@
-function [rc, sc, qc, wc, sigma2_a, sigma2_wc, N0] = dfe_trasmitter(a, SNR, qc_length,t0)
-T = 1; % Sym period
+function [rc, sc, qc, wc, sigma2_a, sigma2_wc, N0] = dfe_trasmitter(a, T, SNR, qc_length,t0)
 up_factor = 4;
 T_Q = T/up_factor;
 
-up_factor = 4;
 a_up = upsample(a,up_factor);
 qc = channel_response(qc_length);
 gm = fliplr(conj(qc));    %match filter

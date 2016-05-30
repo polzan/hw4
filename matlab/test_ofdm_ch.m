@@ -18,7 +18,7 @@ Nvirt = 91;
 % Channel
 SNR = 14;
 t0 = 51; % 2 half-length of rcos + peak of qc
-qc_length = 20;
+qc_length = 25;
 rcos_length = 40;
 [r, gc, T_c, t0_sampled, sigma2_w] = ofdm_channel(s, T_ofdm, SNR, t0, qc_length, rcos_length, M, Npx, Nvirt);
 
