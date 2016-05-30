@@ -1,21 +1,23 @@
 function [Pbit, err_count] = simulate_ofdm(Nbits, SNR, coded)
+p = global_parameters();
+
 skip_final_transient = 100;
 Nbits = Nbits + skip_final_transient;
 
 [n_info_bits, a, bits, uncoded_bits] = transmitter(Nbits, coded);
-T = 1; % symbol period
+T = p.sym_period;
 
-M = 512;
-Npx = 16; % length of gc - 1
-Nvirt = 101;
+M = p.ofdm.M;
+Npx = p.ofdm.Npx; % length of gc - 1
+Nvirt = p.ofdm.Nvirt;
 
 % OFDM modulation
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx, Nvirt);
 
 % Channel
-t0 = 35; % 2 half-length of rcos + peak of qc
-qc_length = 20;
-rcos_length = 25;
+t0 = p.ofdm.t0; % 2 half-length of rcos + peak of qc
+qc_length = p.channel.qc_length;
+rcos_length = p.ofdm.rcos_length;
 [r, gc, T_c, t0_sampled, sigma2_w] = ofdm_channel(s, T_ofdm, SNR, t0, qc_length, rcos_length, M, Npx, Nvirt);
 
 % OFDM demodulator

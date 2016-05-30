@@ -9,17 +9,17 @@ Nbits = Nbits + skip_final_transient;
 T = 1; % symbol period
 
 M = 512;
-Npx = 16; % length of gc - 1
-Nvirt = 61;
+Npx = 24; % length of gc - 1
+Nvirt = 91;
 
 % OFDM modulation
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx, Nvirt);
 
 % Channel
 SNR = 14;
-t0 = 71; % 2 half-length of rcos + peak of qc
+t0 = 51; % 2 half-length of rcos + peak of qc
 qc_length = 20;
-rcos_length = 60;
+rcos_length = 40;
 [r, gc, T_c, t0_sampled, sigma2_w] = ofdm_channel(s, T_ofdm, SNR, t0, qc_length, rcos_length, M, Npx, Nvirt);
 
 figure;
@@ -57,5 +57,5 @@ for i=1:M-Nvirt
 end
 
 figure;
-plot(0:M-1-Nvirt, Pbits);
+stairs(0:M-1-Nvirt, Pbits);
 title('Pbit per subch');
