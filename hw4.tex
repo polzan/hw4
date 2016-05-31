@@ -66,9 +66,19 @@
   upquote=true,
 }
 \maketitle
-
-\section{Bit Error Probability Comparison}
-
+\section{Bit error probability comparison}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{matlab/pbits_uncoded}
+  \caption{Uncoded bits}
+  \label{plot:uncoded}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{matlab/pbits_coded}
+  \caption{Coded bits}
+  \label{plot:coded}
+\end{figure}
 
 \section{DFE}
 
@@ -123,6 +133,4 @@
   \caption{Global frequency response before receiver sampler}
   \label{plot:gc_dft}
 \end{figure}
-
-
 \end{document}
