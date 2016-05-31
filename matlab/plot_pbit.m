@@ -19,6 +19,10 @@ print('pbits_uncoded', '-depsc');
 
 load('pbits_coded');
 
+pbit_awgn_c = max(pbit_awgn_c, 5e-6);
+pbit_ofdm_c = max(pbit_ofdm_c, 5e-6);
+pbit_dfe_c = max(pbit_dfe_c, 5e-6);
+
 figure;
 semilogy(SNRs, pbit_awgn_c, 'k');
 hold on;
