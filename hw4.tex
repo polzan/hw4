@@ -39,6 +39,7 @@
 \newcommand{\ind}[1]{\operatorname{\mathbbm{1}}\left\{#1\right\}}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\rcos}{rcos}
 \newcommand{\distr}[0]{\sim}
 \newcommand{\unif}[1]{\mathcal{U}_{#1}}
 
@@ -152,31 +153,70 @@ LLR at the receiver side, where the noise powers are
 
 \section{OFDM}
 \label{sec:ofdm}
-The OFDM system takes as input the symbol sequence we want to transmit $a_k$ and splits it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (we send only zeros) across the subchannels in the interval $[\frac{M}{2}-\frac{N_{vir}}{2},\frac{M}{2}+\frac{N_{vir}}{2}]$ in order to avoid having to use a pair of transmit and receive filters with very narrow transition bands.
+The OFDM system takes as input the symbol sequence we want to transmit $a_k$ and splits it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (we send only zeros) across the subchannels in the interval $[\frac{M}{2}-\frac{N_{vir}}{2},\frac{M}{2}+\frac{N_{vir}}{2}]$ in order to avoid to have to use a pair of transmit and receive filters with very narrow transition bands.
 We select $N_{vir} = 48$ in order to find a compromise betweeen achieving good performances and don't waste too much bandwidth. With this choise we waste about $ 10\% $ of the transmitting subchannels but, on the oder hand, we reach a reasonable $ P_{bit} $.
-Then for every subsequence $a_k[i], i = 1,2...M$ we compute the IDFT, obtaining $A_k[i] = IDFT[a_k[i]]$, and we add a prefix in order to guarantee the orthogonality between the various subchannels. To do this we select $N_{px} = 12$ that corresponds to the length of the non zero coefficient of equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$, where $g_c = g_{rcos}*q_c*g_{rcos}(nT_c)$, as can be seen in Fig. ~\ref{plot:h} and 
+Then for every subsequence $a_k[i], i = 0,1,\dots M-1$ (where we also take into account the subchannels filled with zeros) we compute the inverse DFT, obtaining
+\begin{equation}
+  A_k[l] = \sum_{i=0}^{M-1}a_k[i]e^{j\frac{2\pi}{M}il} \qquad l=0,1,\dots M-1 ,
+\end{equation}
+and we add a cyclic prefix in order to guarantee the orthogonality between the various subchannels. To do this we select $N_{px} = 10$ that corresponds to the number of  non-zero coefficients of the equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$ starting from $t_0$ ($m = 0$) which is shown in Fig.~\ref{plot:h}. The series of the channel, the transmit and the receive filters has impulse response $g_c(nT_c) = \left(g_{rcos}*q_c*g_{rcos}\right)(nT_c)$, as can be seen in Fig.~\ref{plot:gc} and 
 \begin{align*}
 T_{OFDM} = \frac{T_{block}}{M+N_{px}}
 \end{align*} 
 that is the symbol period after the parallel to series conversion ($T_{block}$ is the period to trasmit an entire $A_k[i]$ sequence).
-In fact finally we convert the parallel of the $A_k[i]$ blocks in their series (block by bock) and trasmit the obtained symbol sequence $s_k$ through the channel.
-\newline The channel model we have to implement is composed by 3 blocks:
+Finally we convert the $A_k[i]$ from parallel to series and trasmit the obtained symbol sequence $s_k$ through the channel.
+
+The channel model we have to implement is composed by 3 blocks:
 \begin{itemize}
 \item trasmitter filter
-\item receiver filter
 \item channel
+\item receiver filter
 \end{itemize} 
-The trasmitter and receiver filters $g_{rcos}(nT_c)$ impulse response is the same and it's reportend in Fig. ~\ref{plot:g_rcos}. In Fig. ~\ref{plot:g_rcos_freqz} we have indeed the frequqncy responce of the two filters, in which we can see the low-pass behaviour, with a cut-off frequency of about 0.125.For these filters we choose a length of 40 taps to have a good accuracy. With reguard to the channel, the impulse response $q_c$ it's shown in Fig. ~\ref{plot:qc}, while the frequency response it's in Fig. ~\ref{plot:qc_freqz}.
-To complete the desctiption of the channel behaviour we add before the receiver filter we the complex gaussian noise that affects our transmission. We estimate the corresponding power $\sigma_{\omega}^2$ by using the information of our target SNR ($\Gamma$) through the relation:
+The trasmitter and receiver filters have the same frequency response
+\begin{equation}
+  G_{rcos}(f) = \sqrt{\rcos\left(\frac{f}{1/T_{OFDM}}, \rho_{OFDM}\right)} \qquad \rho_{OFDM} = 0.0625
+\end{equation}
+that we approximate by truncating its inverse Fourier transform to 40
+coeffiecients.
+The truncated impulse response is reported in Fig.~\ref{plot:g_rcos}, while in Fig.~\ref{plot:g_rcos_freqz} there is the approximated frequqncy responce $G_{rcos}(f)$ that has a low-pass behaviour with a bandwidth of $\frac{1}{4T_c}$.
 
-\begin{align*}
-\sigma_{\omega}^2 = \frac{(M-N_{vir})}{M^2}\frac{\sigma_{a}^2 E_{g_{rcos},qc}}{\Gamma}
+With reguard to the channel, the impulse response $q_c$ is shown in Fig.~\ref{plot:qc}, while the frequency response is in Fig.~\ref{plot:qc_freqz}.
+
+To complete the desctiption of the channel behaviour we add before the receiver filter we the complex gaussian noise that affects our transmission. We set the corresponding power $\sigma_{w_c}^2$ by using the information of our target SNR ($\Gamma$) through the relation:
+
+\begin{align}
+  \sigma^2_{s_c} &= \frac{(M-N_{vir})}{M^2}\sigma_{a}^2 E_{g_{rcos},qc} \\
+\sigma_{w_c}^2 &= \frac{\sigma^2_{s_c}}{\Gamma}
 \label{eq:var_OFDM}
-\end{align*}
+\end{align}
 
-where $E_{g_{rcos},qc}$ is the energy of the series between the transmitter filter and the channel $g_{rcos,qc}(nT_c) = g_{rcos}*q_c(nT_c)$ and $\sigma_a^2 = 2$ is the power of the transmitted constallation.
-\newline At the receiver side after filtering with $g_c = g_{rcos}$ we sample the signal in the instants $t_0 + kT_{OFDM}$ where we choose $\hat{t_0} = \frac{t_0}{T_c} = 27$ in order to start sampling from the first non zero coefficient of the equivalent channel impulse response $h$ (Fig. ~\ref{plot:h}). After sampling we decompose the received sequence $r_k$ among the $M$ subchannels obtaining $\hat{A}_k[i], i = 1,2,..M$ (that are the same block as before after crossing the channel), we remove the $N_{px}$ prefix on each block and we compute the DFT obtaining for every block obtaining the output signals $y_k[i] = DFT[\hat{A}_k[i]]$. We equalize each block by using ??????????? Finally we convert the parallel of the $y_k[i]$ into their series (block by block as in the transmitter) and use the received sequence $y_k$ to estimate the transmitted symbols. 
-\newline In the case of the uncoded bits we use a simple threshold detector, otherwise we use the relations (\ref{eq:llr_even}) and (\ref{eq:llr_odd}) to compute the LLR with the $\sigma^2_w$ computed by using (\ref{eq:var_OFDM}).
+where $E_{g_{rcos},qc}$ is the energy of the series between the transmitter filter and the channel: $g_{rcos,qc}(nT_c) = \left(g_{rcos}*q_c\right)(nT_c)$ and $\sigma_a^2 = 2$ is the power of the transmitted symbols (assumed to be iid).
+
+At the receiver side after filtering with $g_{Rc} = g_{rcos}$ we sample the signal in the instants $t_0 + kT_{OFDM}$ where we choose $\hat{t_0} = \frac{t_0}{T_c} = 31$ in order to start sampling from the first non-zero coefficient of the equivalent channel impulse response $h$ (Fig.~\ref{plot:h}).
+
+After sampling we decompose the received sequence $r_k$ among $M+N_{px}$ components obtaining $\hat{A}_k[l], l = 0,1,\dots M-1$ after we remove the first $N_{px}$ components. We then compute the DFT to get the output subchannels
+\begin{equation}
+  x_k[i] = \sum_{l=0}^{M-1}\hat{A}_k[l]e^{\frac{2\pi}{M}il} \qquad i=0,1,\dots M-1
+\end{equation}
+and compensate the gain of each subchannel by computing the M-samples
+DFT of the overall response $g_c(t_0 + mT_{OFDM})$ (which is shown in
+Fig.~\ref{plot:gc_dft}) and scaling each subchannel by the inverse of
+its corresponding $G_c(i)$:
+\begin{equation}
+  y_k[i] = \frac{x_k[i]}{G_c(i)} \qquad i=0,1,\dots M-1 .
+\end{equation}
+
+Finally we convert the parallel of the $y_k[i]$ into their series and use the received sequence $y_k$ to detect the transmitted symbols.
+
+In the case of the uncoded bits we use a simple threshold detector,
+otherwise we use the relations (\ref{eq:llr_even}) and
+(\ref{eq:llr_odd}) to compute the LLR, where the noise powers are
+\begin{align}
+  \sigma_W^2 &= (M-N_{vir})\sigma^2_{w_c} \\
+  \sigma^2_I = \sigma^2_Q &= \frac{\sigma_W^2}{2} ,
+\end{align}
+and pass the LLR sequence $l'_p$ to the deinterlacer and the LDPC
+decoder to get the bits.
 
 \begin{figure}[htbp]
   \centering
