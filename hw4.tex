@@ -80,6 +80,17 @@ The configuaration of the SC scheme is the same of the point b) of the previous 
 M1 is the length of the equalizer filter $c$, M2 is the length of the feedback filter $b$ and $D$ is ????????????????????the delay introduced before the $c$ filter??????????????????????.
 As suggested, we cutted a little bit more the channel impulse response, whose behaviour is shown in Fig. ~\ref{plot:qc}. So we have also to adapt the optimal value of $\Bar{t_0}$ that now is $\Bar{t_0} = 19$ (number of samples $T_c$), in order to sample in the peak of the overall impulse response before the sampler.
 \section{OFDM}
+The OFDM system take as input the symbol sequence we want to transmit $a_k$ and split it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (sending all zeros) across the subchannels in the interval $[\frac{M}{2}-N_{vir}/2,\frac{M}{2}+\frac{N_{vir}}{2}]$ ???why????.
+We select $N_{vir} = 48$ in order to find a compromise betweeen achieving good performances and don't waste too much channel capacity. With this choise we waste about $ 10\% $ of the transmitting subchannels but, on the oder hand, we reach a reasonable $ P_{bit} $.
+
+
+
+\begin{align*}
+\sigma_{\omega}^2 = \frac{(M-N_{vir})}{M^2}\frac{\sigma_{a}^2 E_{g_{rcos},qc}}{\Gamma}
+\end{align*}
+
+
+
 
 \begin{figure}[htbp]
   \centering
