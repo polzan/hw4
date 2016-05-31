@@ -48,7 +48,7 @@ figure;
 stem((0:length(gc)-1)-t0_sampled, gc);
 xlabel('m [@T_{ofdm}]');
 ylabel('h(mT_{ofdm})');
-xlim([-2 15]);
+xlim([-3 13]);
 grid on;
 print('h', '-deps');
 
