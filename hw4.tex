@@ -66,24 +66,21 @@
   upquote=true,
 }
 \maketitle
-\section{Bit error probability comparison}
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{matlab/pbits_uncoded}
-  \caption{Uncoded bits}
-  \label{plot:uncoded}
-\end{figure}
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth]{matlab/pbits_coded}
-  \caption{Coded bits}
-  \label{plot:coded}
-\end{figure}
+
+\section{Bit Error Probability Comparison}
+
 
 \section{DFE}
-
-
+The configuaration of the SC scheme is the same of the point b) of the previous homework as required. The parameter we used were:
+\begin{itemize}
+\item M1 = 3;
+\item  M2 = 2;
+\item D = 1.
+\end{itemize}
+M1 is the length of the equalizer filter $c$, M2 is the length of the feedback filter $b$ and $D$ is ????????????????????the delay introduced before the $c$ filter??????????????????????.
+As suggested, we cutted a little bit more the channel impulse response, whose behaviour is shown in Fig. ~\ref{plot:qc}. So we have also to adapt the optimal value of $\Bar{t_0}$ that now is $\Bar{t_0} = 19$ (number of samples $T_c$), in order to sample in the peak of the overall impulse response before the sampler.
 \section{OFDM}
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.6\textwidth]{matlab/qc}
@@ -133,4 +130,6 @@
   \caption{Global frequency response before receiver sampler}
   \label{plot:gc_dft}
 \end{figure}
+
+
 \end{document}
