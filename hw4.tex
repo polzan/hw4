@@ -181,6 +181,18 @@ coefficients.
 The truncated impulse response is reported in Fig.~\ref{plot:g_rcos}, while in Fig.~\ref{plot:g_rcos_freqz} there is the approximated frequency response $G_{rcos}(f)$ that has a low-pass behaviour with a bandwidth of $\frac{1}{4T_c}$.
 
 With regard to the channel, the impulse response $q_c$ is shown in Fig.~\ref{plot:qc}, while the frequency response is in Fig.~\ref{plot:qc_freqz}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/qc}
+  \caption{Channel impulse response}
+  \label{plot:qc}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/g_rcos}
+  \caption{Transmitter/receiver filter impulse response}
+  \label{plot:g_rcos}
+\end{figure}
 
 To complete the description of the channel behaviour we add before the receiver filter we the complex Gaussian noise that affects our transmission. We set the corresponding power $\sigma_{w_c}^2$ by using the information of our target SNR ($\Gamma$) through the relation:
 
@@ -193,6 +205,30 @@ To complete the description of the channel behaviour we add before the receiver 
 where $E_{g_{rcos},qc}$ is the energy of the series between the transmitter filter and the channel: $g_{rcos,qc}(nT_c) = \left(g_{rcos}*q_c\right)(nT_c)$ and $\sigma_a^2 = 2$ is the power of the transmitted symbols (assumed to be iid).
 
 At the receiver side after filtering with $g_{Rc} = g_{rcos}$ we sample the signal in the instants $t_0 + kT_{OFDM}$ where we choose $\hat{t_0} = \frac{t_0}{T_c} = 31$ in order to start sampling from the first non-zero coefficient of the equivalent channel impulse response $h$ (Fig.~\ref{plot:h}).
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/gc}
+  \caption{Global impulse response before receiver sampler}
+  \label{plot:gc}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/h}
+  \caption{Equivalent channel impulse response}
+  \label{plot:h}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/qc_freqz}
+  \caption{Channel frequency response}
+  \label{plot:qc_freqz}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/g_rcos_freqz}
+  \caption{Transmitter/receiver filter frequency response}
+  \label{plot:g_rcos_freqz}
+\end{figure}
 
 After sampling we decompose the received sequence $r_k$ among $M+N_{px}$ components obtaining $\hat{A}_k[l], l = 0,1,\dots M-1$ after we remove the first $N_{px}$ components. We then compute the DFT to get the output sub-channels
 \begin{equation}
@@ -205,6 +241,12 @@ its corresponding $G_c(i)$:
 \begin{equation}
   y_k[i] = \frac{x_k[i]}{G_c(i)} \qquad i=0,1,\dots M-1 .
 \end{equation}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{matlab/gc_dft}
+  \caption{M-sample DFT of the overall response $g_c$}
+  \label{plot:gc_dft}
+\end{figure}
 
 Finally we convert the parallel of the $y_k[i]$ into their series and use the received sequence $y_k$ to detect the transmitted symbols.
 
@@ -217,56 +259,4 @@ otherwise we use the relations (\ref{eq:llr_even}) and
 \end{align}
 and pass the LLR sequence $l'_p$ to the deinterlacer and the LDPC
 decoder to get the bits.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/qc}
-  \caption{Channel impulse response}
-  \label{plot:qc}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/g_rcos}
-  \caption{Transmitter/receiver filter impulse response}
-  \label{plot:g_rcos}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/gc}
-  \caption{Global impulse response before receiver sampler}
-  \label{plot:gc}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/h}
-  \caption{Equivalent channel impulse response}
-  \label{plot:h}
-\end{figure}
-
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/qc_freqz}
-  \caption{Channel frequency response}
-  \label{plot:qc_freqz}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/g_rcos_freqz}
-  \caption{Transmitter/receiver filter frequency response}
-  \label{plot:g_rcos_freqz}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{matlab/gc_dft}
-  \caption{M-sample DFT of the overall response $g_c$}
-  \label{plot:gc_dft}
-\end{figure}
-
-
 \end{document}
