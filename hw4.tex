@@ -27,6 +27,7 @@
 
 \renewcommand{\vec}[1]{\underline{#1}}
 \renewcommand{\Re}[1]{\operatorname{Re}\left[#1\right]}
+\renewcommand{\Im}[1]{\operatorname{Im}\left[#1\right]}
 \newcommand{\E}[1]{\operatorname{E}\left[#1\right]}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\abs}[1]{\left|#1\right|}
@@ -66,8 +67,47 @@
   upquote=true,
 }
 \maketitle
+\section{Bit error probability comparison}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{matlab/pbits_uncoded}
+  \caption{$P_{bit}$ comparison while transmitting uncoded bits}
+  \label{plot:uncoded}
+\end{figure}
+In Fig.~\ref{plot:uncoded} we report the bit error probabilties that
+we obtain by simulating the single carrier (section~\ref{sec:dfe}) and
+the OFDM (section~\ref{sec:ofdm}) systems for various values of the
+SNR. Together with these two systems we plot the same bound
+simulated in HW3 that we obtain with an AWGN channel:
+\begin{align}
+  y_k &= a_k + w_k \\
+  w_k & \distr \mathcal{CN}(0, \sigma^2_w) \\
+  \sigma^2_w &= \frac{\sigma^2_a}{\Gamma} \\
+  \sigma^2_a &= 2 .
+\end{align}
 
-\section{Bit Error Probability Comparison}
+For each point of the plot we generate 3 millions of uniformly
+distributed bits and map them into symbols from the same constellation
+of HW3, asssociating the even bits to the real part and the odd bits
+to the imaginary part
+\begin{align}
+  \mathcal{A} &= \left\{ 1+j, -1+j, -1-j, 1-j \right\} \\
+  b_{2l}  & \leftrightarrow \Re{a_k} \\
+  b_{2l+1}  & \leftrightarrow \Im{a_k}
+\end{align}
+and then we simulate the transmission of these symbols through the
+AWGN, OFDM and DFE systems. The received signals $y_k$ are then passed
+to a threshold detector to obtain the bits.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{matlab/pbits_coded}
+  \caption{$P_{bit}$ comparison while transmitting LDPC-coded bits}
+  \label{plot:coded}
+\end{figure}
+
+
+\section{DFE}
 
 
 \section{DFE}
