@@ -153,36 +153,36 @@ LLR at the receiver side, where the noise powers are
 
 \section{OFDM}
 \label{sec:ofdm}
-The OFDM system takes as input the symbol sequence we want to transmit $a_k$ and splits it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (we send only zeros) across the subchannels in the interval $[\frac{M}{2}-\frac{N_{vir}}{2},\frac{M}{2}+\frac{N_{vir}}{2}]$ in order to avoid to have to use a pair of transmit and receive filters with very narrow transition bands.
-We select $N_{vir} = 48$ in order to find a compromise betweeen achieving good performances and don't waste too much bandwidth. With this choise we waste about $ 10\% $ of the transmitting subchannels but, on the oder hand, we reach a reasonable $ P_{bit} $.
-Then for every subsequence $a_k[i], i = 0,1,\dots M-1$ (where we also take into account the subchannels filled with zeros) we compute the inverse DFT, obtaining
+The OFDM system takes as input the symbol sequence we want to transmit $a_k$ and splits it into $M-N_{vir}$ sub-sequences that corresponds to the number of sub-channels available for transmitting data. In fact we avoid transmitting (we send only zeros) across the sub-channels in the interval $[\frac{M}{2}-\frac{N_{vir}}{2},\frac{M}{2}+\frac{N_{vir}}{2}]$ in order to avoid to have to use a pair of transmit and receive filters with very narrow transition bands.
+We select $N_{vir} = 48$ in order to find a compromise between achieving good performances and don't waste too much bandwidth. With this choice we waste about $ 10\% $ of the transmitting sub-channels but, on the order hand, we reach a reasonable $ P_{bit} $.
+Then for every sub-sequence $a_k[i], i = 0,1,\dots M-1$ (where we also take into account the sub-channels filled with zeros) we compute the inverse DFT, obtaining
 \begin{equation}
   A_k[l] = \sum_{i=0}^{M-1}a_k[i]e^{j\frac{2\pi}{M}il} \qquad l=0,1,\dots M-1 ,
 \end{equation}
-and we add a cyclic prefix in order to guarantee the orthogonality between the various subchannels. To do this we select $N_{px} = 10$ that corresponds to the number of  non-zero coefficients of the equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$ starting from $t_0$ ($m = 0$) which is shown in Fig.~\ref{plot:h}. The series of the channel, the transmit and the receive filters has impulse response $g_c(nT_c) = \left(g_{rcos}*q_c*g_{rcos}\right)(nT_c)$, as can be seen in Fig.~\ref{plot:gc} and 
+and we add a cyclic prefix in order to guarantee the orthogonality between the various sub-channels. To do this we select $N_{px} = 10$ that corresponds to the number of  non-zero coefficients of the equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$ starting from $t_0$ ($m = 0$) which is shown in Fig.~\ref{plot:h}. The series of the channel, the transmit and the receive filters has impulse response $g_c(nT_c) = \left(g_{rcos}*q_c*g_{rcos}\right)(nT_c)$, as can be seen in Fig.~\ref{plot:gc} and 
 \begin{align*}
 T_{OFDM} = \frac{T_{block}}{M+N_{px}}
 \end{align*} 
-that is the symbol period after the parallel to series conversion ($T_{block}$ is the period to trasmit an entire $A_k[i]$ sequence).
-Finally we convert the $A_k[i]$ from parallel to series and trasmit the obtained symbol sequence $s_k$ through the channel.
+that is the symbol period after the parallel to series conversion ($T_{block}$ is the period to transmit an entire $A_k[i]$ sequence).
+Finally we convert the $A_k[i]$ from parallel to series and transmit the obtained symbol sequence $s_k$ through the channel.
 
 The channel model we have to implement is composed by 3 blocks:
 \begin{itemize}
-\item trasmitter filter
+\item transmitter filter
 \item channel
 \item receiver filter
 \end{itemize} 
-The trasmitter and receiver filters have the same frequency response
+The transmitter and receiver filters have the same frequency response
 \begin{equation}
   G_{rcos}(f) = \sqrt{\rcos\left(\frac{f}{1/T_{OFDM}}, \rho_{OFDM}\right)} \qquad \rho_{OFDM} = 0.0625
 \end{equation}
 that we approximate by truncating its inverse Fourier transform to 40
-coeffiecients.
-The truncated impulse response is reported in Fig.~\ref{plot:g_rcos}, while in Fig.~\ref{plot:g_rcos_freqz} there is the approximated frequqncy responce $G_{rcos}(f)$ that has a low-pass behaviour with a bandwidth of $\frac{1}{4T_c}$.
+coefficients.
+The truncated impulse response is reported in Fig.~\ref{plot:g_rcos}, while in Fig.~\ref{plot:g_rcos_freqz} there is the approximated frequency response $G_{rcos}(f)$ that has a low-pass behaviour with a bandwidth of $\frac{1}{4T_c}$.
 
-With reguard to the channel, the impulse response $q_c$ is shown in Fig.~\ref{plot:qc}, while the frequency response is in Fig.~\ref{plot:qc_freqz}.
+With regard to the channel, the impulse response $q_c$ is shown in Fig.~\ref{plot:qc}, while the frequency response is in Fig.~\ref{plot:qc_freqz}.
 
-To complete the desctiption of the channel behaviour we add before the receiver filter we the complex gaussian noise that affects our transmission. We set the corresponding power $\sigma_{w_c}^2$ by using the information of our target SNR ($\Gamma$) through the relation:
+To complete the description of the channel behaviour we add before the receiver filter we the complex Gaussian noise that affects our transmission. We set the corresponding power $\sigma_{w_c}^2$ by using the information of our target SNR ($\Gamma$) through the relation:
 
 \begin{align}
   \sigma^2_{s_c} &= \frac{(M-N_{vir})}{M^2}\sigma_{a}^2 E_{g_{rcos},qc} \\
@@ -194,13 +194,13 @@ where $E_{g_{rcos},qc}$ is the energy of the series between the transmitter filt
 
 At the receiver side after filtering with $g_{Rc} = g_{rcos}$ we sample the signal in the instants $t_0 + kT_{OFDM}$ where we choose $\hat{t_0} = \frac{t_0}{T_c} = 31$ in order to start sampling from the first non-zero coefficient of the equivalent channel impulse response $h$ (Fig.~\ref{plot:h}).
 
-After sampling we decompose the received sequence $r_k$ among $M+N_{px}$ components obtaining $\hat{A}_k[l], l = 0,1,\dots M-1$ after we remove the first $N_{px}$ components. We then compute the DFT to get the output subchannels
+After sampling we decompose the received sequence $r_k$ among $M+N_{px}$ components obtaining $\hat{A}_k[l], l = 0,1,\dots M-1$ after we remove the first $N_{px}$ components. We then compute the DFT to get the output sub-channels
 \begin{equation}
   x_k[i] = \sum_{l=0}^{M-1}\hat{A}_k[l]e^{\frac{2\pi}{M}il} \qquad i=0,1,\dots M-1
 \end{equation}
-and compensate the gain of each subchannel by computing the M-samples
+and compensate the gain of each sub-channel by computing the M-samples
 DFT of the overall response $g_c(t_0 + mT_{OFDM})$ (which is shown in
-Fig.~\ref{plot:gc_dft}) and scaling each subchannel by the inverse of
+Fig.~\ref{plot:gc_dft}) and scaling each sub-channel by the inverse of
 its corresponding $G_c(i)$:
 \begin{equation}
   y_k[i] = \frac{x_k[i]}{G_c(i)} \qquad i=0,1,\dots M-1 .
