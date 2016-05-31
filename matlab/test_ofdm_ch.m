@@ -1,6 +1,6 @@
 close all; %clear all; clc;
 Nbits = 1e6;
-coded = 'uncoded';
+coded = 'coded';
 
 skip_final_transient = 100;
 Nbits = Nbits + skip_final_transient;
@@ -9,16 +9,16 @@ Nbits = Nbits + skip_final_transient;
 T = 1; % symbol period
 
 M = 512;
-Npx = 24; % length of gc - 1
-Nvirt = 91;
+Npx = 128; % length of gc - 1
+Nvirt = 256;
 
 % OFDM modulation
 [s, T_ofdm, a_subch] = ofdm_tx(a, T, M, Npx, Nvirt);
 
 % Channel
-SNR = 14;
-t0 = 51; % 2 half-length of rcos + peak of qc
-qc_length = 25;
+SNR = 2;
+t0 = 27; % 2 half-length of rcos + peak of qc
+qc_length = 20;
 rcos_length = 40;
 [r, gc, T_c, t0_sampled, sigma2_w] = ofdm_channel(s, T_ofdm, SNR, t0, qc_length, rcos_length, M, Npx, Nvirt);
 
@@ -31,7 +31,7 @@ plot(t0_sampled .* ones(2,1), ylim);
 [y, Ty, y_subch] = ofdm_rx(r, T_ofdm, M, Npx, Nvirt, gc, t0_sampled);
 
 % Decode symbols
-sigma2_W = (M-Nvirt)*sigma2_w;
+sigma2_W = (M)*sigma2_w;
 bits_det = receiver(y, n_info_bits, sigma2_W, coded);
 
 % Check errors
@@ -57,5 +57,5 @@ for i=1:M-Nvirt
 end
 
 figure;
-stairs(0:M-1-Nvirt, Pbits);
+bar(0:M-1-Nvirt, Pbits);
 title('Pbit per subch');
