@@ -152,8 +152,8 @@ LLR at the receiver side, where the noise powers are
 
 \section{OFDM}
 \label{sec:ofdm}
-The OFDM system take as input the symbol sequence we want to transmit $a_k$ and split it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (sending all zeros) across the subchannels in the interval $[\frac{M}{2}-N_{vir}/2,\frac{M}{2}+\frac{N_{vir}}{2}]$ ???why????.
-We select $N_{vir} = 48$ in order to find a compromise betweeen achieving good performances and don't waste too much channel capacity. With this choise we waste about $ 10\% $ of the transmitting subchannels but, on the oder hand, we reach a reasonable $ P_{bit} $.
+The OFDM system takes as input the symbol sequence we want to transmit $a_k$ and splits it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (we send only zeros) across the subchannels in the interval $[\frac{M}{2}-\frac{N_{vir}}{2},\frac{M}{2}+\frac{N_{vir}}{2}]$ in order to avoid having to use a pair of transmit and receive filters with very narrow transition bands.
+We select $N_{vir} = 48$ in order to find a compromise betweeen achieving good performances and don't waste too much bandwidth. With this choise we waste about $ 10\% $ of the transmitting subchannels but, on the oder hand, we reach a reasonable $ P_{bit} $.
 Then for every subsequence $a_k[i], i = 1,2...M$ we compute the IDFT, obtaining $A_k[i] = IDFT[a_k[i]]$, and we add a prefix in order to guarantee the orthogonality between the various subchannels. To do this we select $N_{px} = 12$ that corresponds to the length of the non zero coefficient of equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$, where $g_c = g_{rcos}*q_c*g_{rcos}(nT_c)$, as can be seen in Fig. ~\ref{plot:h} and 
 \begin{align*}
 T_{OFDM} = \frac{T_{block}}{M+N_{px}}
