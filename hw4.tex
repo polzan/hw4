@@ -133,14 +133,14 @@ $\hat{b}_l$.
 
 \section{DFE}
 \label{sec:dfe}
-The configuration of the SC scheme is the same of the point b) of the previous homework as required. The parameter we used are 
+The configuration of the single carrier scheme is the same of the point b) of the previous homework as required. The parameter we used are 
 \begin{align}
   M_1 &= 3 \\
     M_2 &= 2 \\
     D &= 1 \\
     \overline{t_0} &= 19 ,
 \end{align}
-where M1 is the length of the feed-forward filter $c$, M2 is the length of the feedback filter $b$ and $D$ is the delay introduced by the $c$ filter.
+where $M_1$ is the length of the feed-forward filter $c$, $M_2$ is the length of the feedback filter $b$ and $D$ is the delay introduced by the $c$ filter.
 As suggested, we cut a little bit more the channel impulse response, whose behaviour is shown in Fig.~\ref{plot:qc}. So we have also to adapt the optimal value of $\Bar{t_0}$ that now is $\Bar{t_0} = 19$ (number of samples at $T_c$), in order to sample in the peak of the overall impulse response before the sampler $q_c * g_M$.
 
 In the case where we encode the bits before modulating we use
