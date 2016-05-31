@@ -1,6 +1,6 @@
 close all; clear all; clc;
 
-SNRs = linspace(3, 14, 25);
+SNRs = linspace(3, 15, 25);
 Nbits = 3e6;
 
 for i=1:length(SNRs)
