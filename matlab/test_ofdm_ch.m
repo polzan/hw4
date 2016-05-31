@@ -31,7 +31,7 @@ plot(t0_sampled .* ones(2,1), ylim);
 [y, Ty, y_subch] = ofdm_rx(r, T_ofdm, M, Npx, Nvirt, gc, t0_sampled);
 
 % Decode symbols
-sigma2_W = (M)*sigma2_w;
+sigma2_W = (M-Nvirt)*sigma2_w;
 bits_det = receiver(y, n_info_bits, sigma2_W, coded);
 
 % Check errors

@@ -26,7 +26,7 @@ s_c = conv(rcos_qc, s_up);
 E_tx_ch = norm(rcos_qc)^2; % Energy of the filters before s_c
 
 sigma2_a = 2; % assuming iid symbols
-sigma2_s = sigma2_a / M;
+sigma2_s = var(s); %sigma2_a / M;
 sigma2_sc = sigma2_s * E_tx_ch;
 sigma2_w = sigma2_sc / 10^(SNR/10);
 
