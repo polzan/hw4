@@ -120,13 +120,12 @@ time, instead of using a threshold detector, we compute the
 log-likelihood ratio of the received bits from the real and imaginary
 parts of $y_k$
 \begin{align}
-  l'_{2k} &= \frac{2\Re{y_k}}{\sigma^2_I}
+  l'_{2k} &= \frac{2\Re{y_k}}{\sigma^2_w/2}
   \label{eq:llr_even} \\
-  l'_{2k+1} &= \frac{2\Im{y_k}}{\sigma^2_Q}
+  l'_{2k+1} &= \frac{2\Im{y_k}}{\sigma^2_w/2}
   \label{eq:llr_odd}
 \end{align}
-where the power of the real and imaginary parts of the noise
-$\sigma^2_I$, $\sigma^2_Q$ depend on which system we are
+with a noise power $\sigma^2_w$ that depends on which system we are
 simulating. The LLR $l'_p$ is then deinterlaced by writing its samples
 by row in a $31\times35$ matrix and reading them by column and it is
 then passed to the LDPC decoder that outputs the detected bits
@@ -144,18 +143,25 @@ M1 is the length of the feed-forward filter $c$, M2 is the length of the feedbac
 As suggested, we cut a little bit more the channel impulse response, whose behaviour is shown in Fig.~\ref{plot:qc}. So we have also to adapt the optimal value of $\Bar{t_0}$ that now is $\Bar{t_0} = 19$ (number of samples at $T_c$), in order to sample in the peak of the overall impulse response before the sampler $q_c * g_M$.
 
 In the coded case we use equations (\ref{eq:llr_even}) and
-(\ref{eq:llr_odd}) to compute the LLR where the noise powers are
-\begin{equation}
-  \sigma^2_I = \sigma^2_Q = \frac{\sigma^2_w}{2} = \frac{\sigma^2_a E_{q_c}}{2\Gamma} .
-\end{equation}
+(\ref{eq:llr_odd}) to compute the LLR where the noise power
+$\sigma^2_w$ is the power of the noise that we add after the channel
+\begin{align}
+  \sigma^2_w &= \frac{\sigma^2_a E_{q_c}}{\Gamma} .
+\end{align}
 
 \section{OFDM}
 \label{sec:ofdm}
 The OFDM system take as input the symbol sequence we want to transmit $a_k$ and split it into $M-N_{vir}$ subsequences that corresponds to the number of subchannels available for transmitting data. In fact we avoid trasmitting (sending all zeros) across the subchannels in the interval $[\frac{M}{2}-N_{vir}/2,\frac{M}{2}+\frac{N_{vir}}{2}]$ ???why????.
 We select $N_{vir} = 48$ in order to find a compromise betweeen achieving good performances and don't waste too much channel capacity. With this choise we waste about $ 10\% $ of the transmitting subchannels but, on the oder hand, we reach a reasonable $ P_{bit} $.
 Then for every subsequence $\hat{a}_k[i], i = 1,2...M$ we compute the IDFT, obtaining $A_k[i] = IDFT[a_k[i]]$, and we add a prefix in order to guarantee the orthogonality between the various subchannels. To do this we select $N_{px} = 12$ that corresponds to the length of the non zero coefficient of equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$, where $g_c = g_{rcos}*q_c*g_{rcos}(nT_c)$, as can be seen in Fig. ~\ref{plot:h}. Finally we convert the parallel of the $A_k[i]$ blocks in their series and trasmit the obtained bit sequence $s_k$ through the channel.
-\newline The channel model we have to implement is composed by trasmitter and received filters $g_{rcos}(nT_c)$ whose impulse response is the same and it's reportend in Fig. ~\ref{plot:g_rcos}, and by the channel itself whose impulse response is $q_c$ and it's shown in Fig. ~\ref{plot:qc}. Before the receiver filter we add the complex gaussian noise  
-of the channel that we estimate using the information of our target SNR ($\Gamma$) through the relation:
+\newline The channel model we have to implement is composed by 3 blocks:
+\begin{itemize}
+\item trasmitter filter
+\item receiver filter
+\item channel
+\end{itemize} 
+The trasmitter and receiver filters $g_{rcos}(nT_c)$ impulse response is the same and it's reportend in Fig. ~\ref{plot:g_rcos}. In Fig. ~\ref{plot:g_rcos_freqz} we have indeed the frequqncy responce of the two filters, in which we can see the low-pass behaviour, with a cut-off frequency of about 0.125. With reguard to the channel, the impulse response $q_c$ it's shown in Fig. ~\ref{plot:qc}, while the frequency response it's in Fig. ~\ref{plot:qc_freqz}.
+To complete the desctiption of the channel behaviour we add before the receiver filter we the complex gaussian noise that affects our transmission. We estimate the corresponding power $\sigma_{\omega}^2$ by using the information of our target SNR ($\Gamma$) through the relation:
 
 \begin{align*}
 \sigma_{\omega}^2 = \frac{(M-N_{vir})}{M^2}\frac{\sigma_{a}^2 E_{g_{rcos},qc}}{\Gamma}
