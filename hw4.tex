@@ -120,12 +120,13 @@ time, instead of using a threshold detector, we compute the
 log-likelihood ratio of the received bits from the real and imaginary
 parts of $y_k$
 \begin{align}
-  l'_{2k} &= \frac{2\Re{y_k}}{\sigma^2_w/2}
+  l'_{2k} &= \frac{2\Re{y_k}}{\sigma^2_I}
   \label{eq:llr_even} \\
-  l'_{2k+1} &= \frac{2\Im{y_k}}{\sigma^2_w/2}
+  l'_{2k+1} &= \frac{2\Im{y_k}}{\sigma^2_Q}
   \label{eq:llr_odd}
 \end{align}
-with a noise power $\sigma^2_w$ that depends on which system we are
+where the power of the real and imaginary parts of the noise
+$\sigma^2_I$, $\sigma^2_Q$ depend on which system we are
 simulating. The LLR $l'_p$ is then deinterlaced by writing its samples
 by row in a $31\times35$ matrix and reading them by column and it is
 then passed to the LDPC decoder that outputs the detected bits
@@ -143,11 +144,10 @@ M1 is the length of the feed-forward filter $c$, M2 is the length of the feedbac
 As suggested, we cut a little bit more the channel impulse response, whose behaviour is shown in Fig.~\ref{plot:qc}. So we have also to adapt the optimal value of $\Bar{t_0}$ that now is $\Bar{t_0} = 19$ (number of samples at $T_c$), in order to sample in the peak of the overall impulse response before the sampler $q_c * g_M$.
 
 In the coded case we use equations (\ref{eq:llr_even}) and
-(\ref{eq:llr_odd}) to compute the LLR where the noise power
-$\sigma^2_w$ is the power of the noise that we add after the channel
-\begin{align}
-  \sigma^2_w &= \frac{\sigma^2_a E_{q_c}}{\Gamma} .
-\end{align}
+(\ref{eq:llr_odd}) to compute the LLR where the noise powers are
+\begin{equation}
+  \sigma^2_I = \sigma^2_Q = \frac{\sigma^2_w}{2} = \frac{\sigma^2_a E_{q_c}}{2\Gamma} .
+\end{equation}
 
 \section{OFDM}
 \label{sec:ofdm}
