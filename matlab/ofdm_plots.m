@@ -22,7 +22,7 @@ figure;
 stem(0:length(qc)-1, qc);
 xlabel('n [@T_c]');
 ylabel('q_c(nT_c)');
-xlim([0, length(qc)-1]);
+xlim([8, length(qc)-1]);
 grid on;
 print('qc', '-deps');
 
