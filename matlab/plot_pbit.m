@@ -14,6 +14,7 @@ xlabel('SNR [dB]');
 ylabel('Pbit');
 legend('OFDM', 'DFE', 'AWGN');
 set(gca, 'XTick', 3:2:15);
+title('UNCODED');
 print('pbits_uncoded', '-depsc');
 
 load('pbits_coded');
@@ -34,4 +35,5 @@ xlabel('SNR [dB]');
 ylabel('Pbit');
 legend('OFDM', 'DFE', 'AWGN');
 set(gca, 'XTick', 0:0.25:2.5);
+title('CODED');
 print('pbits_coded', '-depsc');
