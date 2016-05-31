@@ -14,5 +14,5 @@ params.dfe.M1 = 3;
 params.dfe.M2 = 2;
 params.dfe.D = 1;
 
-params.dfe.t0 = 24;
+params.dfe.t0 = 19;
 end

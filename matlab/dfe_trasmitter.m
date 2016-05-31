@@ -1,10 +1,10 @@
-function [rc, sc, qc, wc, sigma2_a, sigma2_wc, N0] = dfe_trasmitter(a, T, SNR, qc_length,t0)
+function [rc, sc, qc, wc, sigma2_a, sigma2_wc, N0, gm] = dfe_trasmitter(a, T, SNR, qc_length,t0)
 up_factor = 4;
 T_Q = T/up_factor;
 
 a_up = upsample(a,up_factor);
 qc = channel_response(qc_length);
-gm = fliplr(conj(qc));    %match filter
+gm = flip(conj(qc));    %match filter
 gc = conv(qc,gm);   %tot impulse resp.
 
 E_qc = norm(qc)^2; 

@@ -9,11 +9,11 @@ D = p.dfe.D;
 
 [n_info_bits, a, bits, uncoded_bits] = transmitter(Nbits, coded);
 
-[rc, sc, qc, wc, sigma2_a, sigma2_w, N0] = dfe_trasmitter(a, p.sym_period, SNRdB, p.channel.qc_length, t0);
+[rc, sc, qc, wc, sigma2_a, sigma2_w, N0, gm] = dfe_trasmitter(a, p.sym_period, SNRdB, p.channel.qc_length, t0);
 
-[c, b] = build_dfe_filters(qc, flip(conj(qc)), t0, sigma2_a, N0, D, M1, M2);
+[c, b] = build_dfe_filters(qc, gm, t0, sigma2_a, N0, D, M1, M2);
 
-rr = filter(flip(conj(qc)),1,rc);
+rr = filter(gm,1,rc);
 rr_sampled = downsample(rr, 4, mod(t0,4));
 
 [dec_sym_dfe, y] = dfe_filtering(c, b, rr_sampled, D);
