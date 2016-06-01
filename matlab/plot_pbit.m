@@ -2,11 +2,6 @@ close all; clear all; clc;
 
 load('pbits_uncoded');
 
-% Plot continuous lines even when Pbit is not computed
-pbit_awgn_u(isnan(pbit_awgn_u)) = 5e-6;
-pbit_ofdm_u(isnan(pbit_ofdm_u)) = 5e-6;
-pbit_dfe_u(isnan(pbit_dfe_u)) = 5e-6;
-
 figure;
 semilogy(SNRs, pbit_ofdm_u, 'r');
 hold on;
@@ -24,10 +19,9 @@ print('pbits_uncoded', '-depsc');
 
 load('pbits_coded');
 
-% Plot continuous lines even when Pbit is not computed
-pbit_awgn_c(isnan(pbit_awgn_c)) = 5e-6;
-pbit_ofdm_c(isnan(pbit_ofdm_c)) = 5e-6;
-pbit_dfe_c(isnan(pbit_dfe_c)) = 5e-6;
+pbit_awgn_c = max(pbit_awgn_c, 5e-6);
+pbit_ofdm_c = max(pbit_ofdm_c, 5e-6);
+pbit_dfe_c = max(pbit_dfe_c, 5e-6);
 
 figure;
 semilogy(SNRs, pbit_ofdm_c, 'r');
