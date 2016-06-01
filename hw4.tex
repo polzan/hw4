@@ -159,7 +159,7 @@ Then for every sub-sequence $a_k[i], i = 0,1,\dots M-1$ (where we also take into
 \begin{equation}
   A_k[l] = \sum_{i=0}^{M-1}a_k[i]e^{j\frac{2\pi}{M}il} \qquad l=0,1,\dots M-1 ,
 \end{equation}
-and we add a cyclic prefix in order to guarantee the orthogonality between the various sub-channels. To do this we select $N_{px} = 10$ that corresponds to the number of  non-zero coefficients of the equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$ starting from $t_0$ ($m = 0$) which is shown in Fig.~\ref{plot:h}. The series of the channel, the transmit and the receive filters has impulse response $g_c(nT_c) = \left(g_{rcos}*q_c*g_{rcos}\right)(nT_c)$, as can be seen in Fig.~\ref{plot:gc} and 
+and we add a cyclic prefix in order to guarantee the orthogonality between the various sub-channels. To do this we select $N_{px} = 12$ that corresponds to the number of  non-zero coefficients of the equivalent channel impulse response $h(mT_{OFDM}) = g_c(t_0+ mT_{OFDM})$ starting from $t_0$ ($m = 0$) which is shown in Fig.~\ref{plot:h}. The series of the channel, the transmit and the receive filters has impulse response $g_c(nT_c) = \left(g_{rcos}*q_c*g_{rcos}\right)(nT_c)$, as can be seen in Fig.~\ref{plot:gc} and 
 \begin{align*}
 T_{OFDM} = \frac{T_{block}}{M+N_{px}}
 \end{align*} 
@@ -204,7 +204,7 @@ To complete the description of the channel behaviour we add before the receiver 
 
 where $E_{g_{rcos},qc}$ is the energy of the series between the transmitter filter and the channel: $g_{rcos,qc}(nT_c) = \left(g_{rcos}*q_c\right)(nT_c)$ and $\sigma_a^2 = 2$ is the power of the transmitted symbols (assumed to be iid).
 
-At the receiver side after filtering with $g_{Rc} = g_{rcos}$ we sample the signal in the instants $t_0 + kT_{OFDM}$ where we choose $\hat{t_0} = \frac{t_0}{T_c} = 31$ in order to start sampling from the first non-zero coefficient of the equivalent channel impulse response $h$ (Fig.~\ref{plot:h}).
+At the receiver side after filtering with $g_{Rc} = g_{rcos}$ we sample the signal in the instants $t_0 + kT_{OFDM}$ where we choose $\hat{t_0} = \frac{t_0}{T_c} = 27$ in order to start sampling from the first non-zero coefficient of the equivalent channel impulse response $h$ (Fig.~\ref{plot:h}).
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.6\textwidth]{matlab/gc}
@@ -263,9 +263,9 @@ decoder to get the bits.
 The whole set of parameters used in the OFDM system is
 \begin{align}
   M &= 512 \\
-    N_{px} &= 10 \\
+    N_{px} &= 12 \\
     N_{vir} &= 48 \\
-    \overline{t_0} &= 31 \\
+    \overline{t_0} &= 27 \\
     \text{length of} \  g_{rcos} &= 40
 \end{align}
 \end{document}
